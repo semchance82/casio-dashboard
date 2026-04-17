@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DSEG7+Classic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --amber: #ffb300;
+    --amber-dim: #c87f00;
+    --amber-faint: #7a4e00;
+    --amber-glow: rgba(255,179,0,0.15);
+    --bg: #0a0600;
+    --bg-mid: #110900;
+    --divider: rgba(255,179,0,0.18);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--amber);
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #app {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px 12px;
+    transition: opacity 0.8s ease;
+  }
+
+  /* ── MODO NOCHE ── */
+  #app.night { background: #060400; }
+  #app.night #weather-block,
+  #app.night #news-block { display: none; }
+  #app.night #clock-time { font-size: clamp(52px, 16vw, 80px); }
+
+  /* ── RELOJ ── */
+  #clock-block { text-align: center; padding: 8px 0 6px; }
+
+  #clock-time {
+    font-family: 'DSEG7 Classic', 'Courier New', monospace;
+    font-size: clamp(44px, 13vw, 68px);
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 4px;
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(255,179,0,0.4);
+    transition: font-size 0.5s ease;
+  }
+
+  #clock-date {
+    font-size: clamp(11px, 3vw, 14px);
+    letter-spacing: 3px;
+    color: var(--amber-dim);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ── ALARM indicator ── */
+  #alarm-indicator {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--amber-faint);
+    margin-top: 3px;
+    min-height: 14px;
+  }
+  #alarm-indicator.active { color: var(--amber); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--divider);
+    margin: 8px 0;
+  }
+
+  /* ── CLIMA ── */
+  #weather-block { padding: 4px 0; }
+
+  #weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(12px, 3.5vw, 15px);
+    letter-spacing: 1.5px;
+    color: var(--amber);
+  }
+
+  #weather-temp { font-size: clamp(20px, 6vw, 28px); font-weight: 700; letter-spacing: 2px; }
+
+  #weather-minmax {
+    font-size: clamp(10px, 2.8vw, 12px);
+    color: var(--amber-dim);
+    letter-spacing: 1.5px;
+    margin-top: 3px;
+  }
+
+  #weather-sun {
+    font-size: clamp(10px, 2.8vw, 12px);
+    color: var(--amber-dim);
+    letter-spacing: 1.5px;
+    margin-top: 3px;
+    display: flex;
+    gap: 16px;
+  }
+
+  /* ── RADIO ── */
+  #radio-block { padding: 4px 0; }
+
+  #radio-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--amber-faint);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  #radio-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .radio-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--amber-faint);
+    color: var(--amber-dim);
+    font-family: 'Courier New', monospace;
+    font-size: clamp(10px, 2.8vw, 12px);
+    letter-spacing: 1.5px;
+    padding: 8px 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    border-radius: 3px;
+    -webkit-appearance: none;
+  }
+
+  .radio-btn:active, .radio-btn.playing {
+    background: var(--amber-glow);
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  .radio-btn.playing::before { content: "▶ "; }
+  .radio-btn:not(.playing)::before { content: "◼ "; opacity: 0.4; }
+
+  /* ── ALARMA ── */
+  #alarm-block { padding: 4px 0; }
+
+  #alarm-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #alarm-btn {
+    background: transparent;
+    border: 1px solid var(--amber-faint);
+    color: var(--amber-dim);
+    font-family: 'Courier New', monospace;
+    font-size: clamp(10px, 2.8vw, 12px);
+    letter-spacing: 1.5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    -webkit-appearance: none;
+    white-space: nowrap;
+  }
+
+  #alarm-btn.set {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  #alarm-time-display {
+    font-size: clamp(11px, 3vw, 13px);
+    color: var(--amber-dim);
+    letter-spacing: 2px;
+    flex: 1;
+  }
+
+  #alarm-dismiss {
+    background: transparent;
+    border: 1px solid var(--amber-faint);
+    color: var(--amber-faint);
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    display: none;
+  }
+
+  /* ── MODAL ALARMA ── */
+  #alarm-modal {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(6,4,0,0.92);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  #alarm-modal.open { display: flex; }
+
+  #alarm-modal h2 {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+  }
+
+  #alarm-input {
+    font-family: 'DSEG7 Classic', 'Courier New', monospace;
+    font-size: 36px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--amber);
+    color: var(--amber);
+    text-align: center;
+    width: 160px;
+    letter-spacing: 4px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .modal-btns { display: flex; gap: 12px; }
+
+  .modal-btn {
+    background: transparent;
+    border: 1px solid var(--amber-faint);
+    color: var(--amber-dim);
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+    -webkit-appearance: none;
+  }
+
+  .modal-btn.confirm {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  /* ── NOTICIAS ── */
+  #news-block { flex: 1; padding: 4px 0; overflow: hidden; }
+
+  #news-source {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--amber-faint);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+  }
+
+  #news-headline {
+    font-size: clamp(11px, 3vw, 13px);
+    color: var(--amber-dim);
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: opacity 0.4s ease;
+  }
+
+  /* ── RINGING ── */
+  #ringing-overlay {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,179,0,0.05);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    animation: pulse-bg 0.8s infinite alternate;
+  }
+
+  #ringing-overlay.open { display: flex; }
+
+  @keyframes pulse-bg {
+    from { background: rgba(255,179,0,0.03); }
+    to { background: rgba(255,179,0,0.10); }
+  }
+
+  #ringing-time {
+    font-family: 'DSEG7 Classic', 'Courier New', monospace;
+    font-size: 56px;
+    color: var(--amber);
+    letter-spacing: 4px;
+    animation: pulse-text 0.8s infinite alternate;
+  }
+
+  @keyframes pulse-text {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+  }
+
+  #ringing-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+  }
+
+  #stop-alarm-btn {
+    background: transparent;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    padding: 12px 28px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 8px;
+    -webkit-appearance: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="clock-block">
+    <div id="clock-time">00:00</div>
+    <div id="clock-date">LUN 01 ENE</div>
+    <div id="alarm-indicator"></div>
+  </div>
+
+  <hr class="divider">
+
+  <div id="weather-block">
+    <div id="weather-main">
+      <div>
+        <div id="weather-temp">--°</div>
+        <div id="weather-minmax">MIN --°  MAX --°</div>
+      </div>
+      <div id="weather-desc">--</div>
+    </div>
+    <div id="weather-sun">
+      <span id="weather-sunrise">&#9728; --:--</span>
+      <span id="weather-sunset">&#9790; --:--</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div id="radio-block">
+    <div id="radio-label">Radio</div>
+    <div id="radio-buttons">
+      <button class="radio-btn" id="btn-lared" onclick="toggleRadio('lared')">LA RED 910</button>
+      <button class="radio-btn" id="btn-aspen" onclick="toggleRadio('aspen')">ASPEN 102.3</button>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div id="alarm-block">
+    <div id="alarm-row">
+      <button id="alarm-btn" onclick="openAlarmModal()">&#9679; ALARMA</button>
+      <div id="alarm-time-display"></div>
+      <button id="alarm-dismiss" onclick="clearAlarm()">BORRAR</button>
+    </div>
+  </div>
+
+  <hr class="divider" id="news-divider">
+
+  <div id="news-block">
+    <div id="news-source">CARGANDO...</div>
+    <div id="news-headline">Obteniendo noticias...</div>
+  </div>
+</div>
+
+<!-- Modal alarma -->
+<div id="alarm-modal">
+  <h2>Fijar alarma</h2>
+  <input type="time" id="alarm-input">
+  <div class="modal-btns">
+    <button class="modal-btn" onclick="closeAlarmModal()">CANCELAR</button>
+    <button class="modal-btn confirm" onclick="saveAlarm()">CONFIRMAR</button>
+  </div>
+</div>
+
+<!-- Ringing overlay -->
+<div id="ringing-overlay">
+  <div id="ringing-time">00:00</div>
+  <div id="ringing-label">&#9679; ALARMA</div>
+  <button id="stop-alarm-btn" onclick="stopAlarm()">DETENER</button>
+</div>
+
+<audio id="radio-audio" preload="none"></audio>
+<audio id="alarm-audio" loop preload="none"></audio>
+
+<script>
+var STREAMS = {
+  lared: 'https://20283.live.streamtheworld.com/LA_REDAAC.aac',
+  aspen: 'https://20283.live.streamtheworld.com/ASPENAAC.aac'
+};
+
+var STREAMS_FALLBACK = {
+  lared: 'https://playerservices.streamtheworld.com/api/livestream-redirect/LA_REDAAC.aac',
+  aspen: 'https://playerservices.streamtheworld.com/api/livestream-redirect/ASPENAAC.aac'
+};
+
+var RSS_FEEDS = [
+  { name: 'INFOBAE', url: 'https://www.infobae.com/feeds/rss/' },
+  { name: 'BBC MUNDO', url: 'https://feeds.bbci.co.uk/mundo/rss.xml' }
+];
+
+var CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+var LAT = -34.5920;
+var LON = -58.4229;
+
+var alarmTime = null;
+var alarmFired = false;
+var currentRadio = null;
+var newsItems = [];
+var newsIndex = 0;
+var newsTimer = null;
+
+var DIAS = ['DOM','LUN','MAR','MIE','JUE','VIE','SAB'];
+var MESES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+function isNightMode() {
+  var now = new Date();
+  var h = now.getHours();
+  var m = now.getMinutes();
+  var total = h * 60 + m;
+  return total >= 23 * 60 + 30 || total < 7 * 60;
+}
+
+function updateClock() {
+  var now = new Date();
+  var h = String(now.getHours()).padStart(2,'0');
+  var m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clock-time').textContent = h + ':' + m;
+
+  var dia = DIAS[now.getDay()];
+  var fecha = String(now.getDate()).padStart(2,'0');
+  var mes = MESES[now.getMonth()];
+  document.getElementById('clock-date').textContent = dia + ' ' + fecha + ' ' + mes;
+
+  var app = document.getElementById('app');
+  if (isNightMode()) {
+    app.classList.add('night');
+  } else {
+    app.classList.remove('night');
+  }
+
+  checkAlarm(now);
+}
+
+function checkAlarm(now) {
+  if (!alarmTime) return;
+  var h = String(now.getHours()).padStart(2,'0');
+  var m = String(now.getMinutes()).padStart(2,'0');
+  var current = h + ':' + m;
+  if (current === alarmTime && !alarmFired) {
+    alarmFired = true;
+    ringAlarm();
+  }
+  if (current !== alarmTime) {
+    alarmFired = false;
+  }
+}
+
+function ringAlarm() {
+  if (currentRadio) stopRadio();
+  var overlay = document.getElementById('ringing-overlay');
+  overlay.classList.add('open');
+  document.getElementById('ringing-time').textContent = alarmTime;
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep() {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.3);
+    }
+    beep();
+    window._alarmInterval = setInterval(function() { beep(); beep(); }, 1000);
+  } catch(e) {}
+}
+
+function stopAlarm() {
+  document.getElementById('ringing-overlay').classList.remove('open');
+  if (window._alarmInterval) { clearInterval(window._alarmInterval); }
+}
+
+function openAlarmModal() {
+  document.getElementById('alarm-modal').classList.add('open');
+  if (alarmTime) document.getElementById('alarm-input').value = alarmTime;
+}
+
+function closeAlarmModal() {
+  document.getElementById('alarm-modal').classList.remove('open');
+}
+
+function saveAlarm() {
+  var val = document.getElementById('alarm-input').value;
+  if (!val) { closeAlarmModal(); return; }
+  alarmTime = val;
+  alarmFired = false;
+  document.getElementById('alarm-btn').classList.add('set');
+  document.getElementById('alarm-time-display').textContent = val;
+  document.getElementById('alarm-dismiss').style.display = 'block';
+  document.getElementById('alarm-indicator').textContent = 'ALM ' + val;
+  document.getElementById('alarm-indicator').classList.add('active');
+  closeAlarmModal();
+}
+
+function clearAlarm() {
+  alarmTime = null;
+  alarmFired = false;
+  document.getElementById('alarm-btn').classList.remove('set');
+  document.getElementById('alarm-time-display').textContent = '';
+  document.getElementById('alarm-dismiss').style.display = 'none';
+  document.getElementById('alarm-indicator').textContent = '';
+  document.getElementById('alarm-indicator').classList.remove('active');
+}
+
+function toggleRadio(station) {
+  var audio = document.getElementById('radio-audio');
+  if (currentRadio === station) {
+    stopRadio();
+    return;
+  }
+  stopRadio();
+  currentRadio = station;
+  audio.src = STREAMS[station];
+  audio.load();
+  audio.play().catch(function() {
+    audio.src = STREAMS_FALLBACK[station];
+    audio.load();
+    audio.play().catch(function(){});
+  });
+  document.getElementById('btn-lared').classList.toggle('playing', station === 'lared');
+  document.getElementById('btn-aspen').classList.toggle('playing', station === 'aspen');
+}
+
+function stopRadio() {
+  var audio = document.getElementById('radio-audio');
+  audio.pause();
+  audio.src = '';
+  currentRadio = null;
+  document.getElementById('btn-lared').classList.remove('playing');
+  document.getElementById('btn-aspen').classList.remove('playing');
+}
+
+function fetchWeather() {
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON +
+    '&current_weather=true&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,weathercode' +
+    '&timezone=America/Argentina/Buenos_Aires&forecast_days=1';
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        var d = JSON.parse(xhr.responseText);
+        var temp = Math.round(d.current_weather.temperature);
+        var max = Math.round(d.daily.temperature_2m_max[0]);
+        var min = Math.round(d.daily.temperature_2m_min[0]);
+        var code = d.current_weather.weathercode;
+        var sunrise = d.daily.sunrise[0].split('T')[1].substring(0,5);
+        var sunset = d.daily.sunset[0].split('T')[1].substring(0,5);
+        var descs = {0:'DESPEJADO',1:'CASI DESP.',2:'PARCIAL',3:'NUBLADO',45:'NIEBLA',48:'NIEBLA',
+          51:'LLOVIZNA',53:'LLOVIZNA',55:'LLOVIZNA',61:'LLUVIA',63:'LLUVIA',65:'LLUVIA FUERTE',
+          71:'NIEVE',73:'NIEVE',75:'NIEVE',80:'CHUBASCOS',81:'CHUBASCOS',82:'CHUBASCOS',
+          95:'TORMENTA',96:'TORMENTA',99:'TORMENTA'};
+        var desc = descs[code] || 'VARIABLE';
+        document.getElementById('weather-temp').textContent = temp + '\u00b0';
+        document.getElementById('weather-minmax').textContent = 'MIN ' + min + '\u00b0  MAX ' + max + '\u00b0';
+        document.getElementById('weather-desc').textContent = desc;
+        document.getElementById('weather-sunrise').textContent = '\u2600 ' + sunrise;
+        document.getElementById('weather-sunset').textContent = '\u263D ' + sunset;
+      } catch(e) {}
+    }
+  };
+  xhr.send();
+}
+
+function parseRSS(xml) {
+  var items = [];
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(xml, 'text/xml');
+  var entries = doc.querySelectorAll('item');
+  for (var i = 0; i < Math.min(entries.length, 8); i++) {
+    var title = entries[i].querySelector('title');
+    if (title) items.push(title.textContent.replace(/<!\[CDATA\[|\]\]>/g,'').trim());
+  }
+  return items;
+}
+
+function fetchNews() {
+  if (isNightMode()) return;
+  newsItems = [];
+  var loaded = 0;
+  for (var i = 0; i < RSS_FEEDS.length; i++) {
+    (function(feed) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', CORS_PROXY + encodeURIComponent(feed.url), true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          try {
+            var items = parseRSS(xhr.responseText);
+            for (var j = 0; j < items.length; j++) {
+              newsItems.push({ source: feed.name, title: items[j] });
+            }
+          } catch(e) {}
+        }
+        loaded++;
+        if (loaded === RSS_FEEDS.length) startNewsRotation();
+      };
+      xhr.onerror = function() { loaded++; if (loaded === RSS_FEEDS.length) startNewsRotation(); };
+      xhr.send();
+    })(RSS_FEEDS[i]);
+  }
+}
+
+function startNewsRotation() {
+  if (newsItems.length === 0) {
+    document.getElementById('news-source').textContent = '--';
+    document.getElementById('news-headline').textContent = 'Sin noticias disponibles';
+    return;
+  }
+  if (newsTimer) clearInterval(newsTimer);
+  showNews(0);
+  newsTimer = setInterval(function() {
+    if (isNightMode()) return;
+    newsIndex = (newsIndex + 1) % newsItems.length;
+    var el = document.getElementById('news-headline');
+    el.style.opacity = '0';
+    setTimeout(function() {
+      showNews(newsIndex);
+      el.style.opacity = '1';
+    }, 400);
+  }, 20000);
+}
+
+function showNews(idx) {
+  if (newsItems.length === 0) return;
+  var item = newsItems[idx];
+  document.getElementById('news-source').textContent = item.source;
+  document.getElementById('news-headline').textContent = item.title;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+fetchWeather();
+setInterval(fetchWeather, 30 * 60 * 1000);
+fetchNews();
+setInterval(fetchNews, 30 * 60 * 1000);
+</script>
+</body>
+</html>
