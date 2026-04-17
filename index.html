@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>CASIO</title>
 <style>
 @font-face {
@@ -16,430 +16,550 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html, body { width:100%; height:100%; overflow:hidden; background:#080500; }
-body {
-  display:-webkit-flex; display:flex;
-  -webkit-align-items:center; align-items:center;
-  -webkit-justify-content:center; justify-content:center;
+
+html, body {
+  width:100%; height:100%;
+  overflow:hidden;
+  background:#060400;
   font-family:'Share Tech Mono','Courier New',monospace;
 }
 
-/* WATCH */
-.watch {
-  width:97vw; height:94vh;
-  border:2px solid #7a4e00;
-  border-radius:6px;
-  background:#0d0800;
-  position:relative;
+/* CONTENEDOR PRINCIPAL */
+#app {
+  width:100%; height:100%;
   display:-webkit-flex; display:flex;
   -webkit-flex-direction:column; flex-direction:column;
-  overflow:hidden;
-  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,0.18) 0px,rgba(0,0,0,0.18) 1px,transparent 1px,transparent 3px);
-}
-.watch-inner { position:absolute; inset:5px; border:1px solid #1e1000; border-radius:4px; pointer-events:none; z-index:1; }
-
-/* HEADER */
-.header {
-  display:-webkit-flex; display:flex;
-  -webkit-align-items:center; align-items:center;
-  -webkit-justify-content:space-between; justify-content:space-between;
-  padding:0.8vh 2vw;
-  border-bottom:1px solid #1e1000;
-  position:relative; z-index:2;
-}
-.h-label { font-size:1.4vw; letter-spacing:0.2em; color:#7a4e00; text-transform:uppercase; }
-.h-seconds { font-size:1.4vw; letter-spacing:0.1em; color:#3a2200; }
-
-/* MAIN: 3 columnas */
-.main {
-  display:-webkit-flex; display:flex;
-  -webkit-flex-direction:row; flex-direction:row;
-  -webkit-flex:1; flex:1;
-  min-height:0;
-  position:relative; z-index:2;
+  padding:2vw 3vw 2vw 3vw;
 }
 
-/* COLUMNA IZQUIERDA: CLIMA */
-.col-left {
-  width:22vw;
-  display:-webkit-flex; display:flex;
-  -webkit-flex-direction:column; flex-direction:column;
-  padding:1.5vh 2vw;
-  border-right:1px solid #1e1000;
-}
-
-/* COLUMNA CENTRAL: RELOJ */
-.col-center {
+/* ═══════════════════════════════
+   BLOQUE SUPERIOR: RELOJ
+═══════════════════════════════ */
+#clock-block {
   -webkit-flex:1; flex:1;
   display:-webkit-flex; display:flex;
   -webkit-flex-direction:column; flex-direction:column;
   -webkit-align-items:center; align-items:center;
   -webkit-justify-content:center; justify-content:center;
-  padding:1vh 2vw;
 }
 
-/* COLUMNA DERECHA: RADIO + ALARMA + NOTICIAS */
-.col-right {
-  width:26vw;
+/* Header minimalista */
+#top-bar {
+  width:100%;
   display:-webkit-flex; display:flex;
-  -webkit-flex-direction:column; flex-direction:column;
-  padding:1.5vh 2vw;
-  border-left:1px solid #1e1000;
+  -webkit-justify-content:space-between; justify-content:space-between;
+  -webkit-align-items:center; align-items:center;
+  margin-bottom:1vh;
 }
+.top-label { font-size:1.8vw; letter-spacing:0.25em; color:#3a2200; text-transform:uppercase; }
+#alarm-ind { font-size:1.8vw; letter-spacing:0.2em; color:#c87f00; }
 
-/* RELOJ */
+/* Reloj LCD */
 .lcd-wrap { position:relative; display:inline-block; line-height:1; }
 .lcd-ghost {
   font-family:'DSEG7','Courier New',monospace;
-  font-size:17vw; letter-spacing:0.04em;
-  position:absolute; top:0; left:0; color:#1e1000; pointer-events:none;
+  font-size:28vw; letter-spacing:0.04em;
+  position:absolute; top:0; left:0;
+  color:#1a0d00; pointer-events:none;
 }
 .lcd-real {
   font-family:'DSEG7','Courier New',monospace;
-  font-size:17vw; letter-spacing:0.04em;
-  position:relative; color:#ffb300;
-  text-shadow:0 0 20px rgba(255,179,0,0.55),0 0 50px rgba(255,179,0,0.2);
+  font-size:28vw; letter-spacing:0.04em;
+  position:relative;
+  color:#ffb300;
+  text-shadow:0 0 30px rgba(255,179,0,0.6), 0 0 60px rgba(255,179,0,0.2);
 }
-.sep-blink { -webkit-animation:blink 1s step-end infinite; animation:blink 1s step-end infinite; }
-@-webkit-keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.08} }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.08} }
-.date-row { display:-webkit-flex; display:flex; gap:3vw; margin-top:2vh; }
-.date-chip { font-size:2.2vw; letter-spacing:0.22em; color:#c87f00; text-transform:uppercase; }
-.date-chip.bright { color:#ffb300; }
+.sep-blink {
+  -webkit-animation:blink 1s step-end infinite;
+  animation:blink 1s step-end infinite;
+}
+@-webkit-keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.06} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.06} }
 
-/* CLIMA */
-.panel-label { font-size:1.3vw; letter-spacing:0.28em; color:#3a2200; text-transform:uppercase; margin-bottom:0.8vh; border-bottom:1px solid #1e1000; padding-bottom:0.4vh; }
-.temp-wrap { position:relative; display:inline-block; line-height:1; margin-bottom:0.4vh; }
-.temp-ghost { font-family:'DSEG7','Courier New',monospace; font-size:8vw; letter-spacing:0.04em; position:absolute; top:0; left:0; color:#1e1000; }
-.temp-real { font-family:'DSEG7','Courier New',monospace; font-size:8vw; letter-spacing:0.04em; position:relative; color:#ffb300; text-shadow:0 0 10px rgba(255,179,0,0.4); }
-.temp-real sup { font-size:2.2vw; vertical-align:super; opacity:0.75; font-family:'Share Tech Mono','Courier New',monospace; }
-.w-desc { font-size:1.5vw; letter-spacing:0.08em; color:#c87f00; text-transform:uppercase; margin-top:0.3vh; }
-.w-meta { font-size:1.4vw; line-height:2; color:#3a2200; margin-top:0.3vh; }
-.w-meta b { color:#ffb300; }
-.w-sun { font-size:1.4vw; line-height:2; color:#3a2200; }
-.w-sun b { color:#c87f00; }
+/* Fecha y segundos */
+#date-sec-row {
+  display:-webkit-flex; display:flex;
+  -webkit-align-items:center; align-items:center;
+  -webkit-justify-content:center; justify-content:center;
+  gap:4vw;
+  margin-top:1.5vh;
+}
+.date-chip { font-size:3vw; letter-spacing:0.22em; color:#c87f00; text-transform:uppercase; }
+.date-chip.dim { color:#7a4e00; }
+#seconds-display {
+  font-family:'DSEG7','Courier New',monospace;
+  font-size:3.5vw; color:#5a3800;
+  letter-spacing:0.1em;
+}
 
-/* RADIO */
-.radio-btns { display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; gap:1vh; margin-bottom:1.2vh; }
+/* ═══════════════════════════════
+   DIVISOR
+═══════════════════════════════ */
+#divider {
+  border:none;
+  border-top:1px solid #1e1000;
+  margin:1.5vh 0;
+}
+
+/* ═══════════════════════════════
+   WIDGETS INFERIORES
+═══════════════════════════════ */
+#widgets {
+  display:-webkit-flex; display:flex;
+  -webkit-flex-direction:row; flex-direction:row;
+  gap:2vw;
+  height:28vh;
+}
+
+/* Widget genérico */
+.widget {
+  -webkit-flex:1; flex:1;
+  border:1px solid #1e1000;
+  border-radius:3px;
+  padding:1.5vh 2vw;
+  display:-webkit-flex; display:flex;
+  -webkit-flex-direction:column; flex-direction:column;
+  overflow:hidden;
+}
+.widget-label {
+  font-size:1.6vw; letter-spacing:0.3em;
+  color:#2a1400; text-transform:uppercase;
+  border-bottom:1px solid #1a0d00;
+  padding-bottom:0.5vh; margin-bottom:0.8vh;
+}
+
+/* WIDGET CLIMA */
+#w-clima { -webkit-flex:1.2; flex:1.2; }
+.temp-wrap { position:relative; display:inline-block; line-height:1; }
+.temp-ghost { font-family:'DSEG7','Courier New',monospace; font-size:7vw; letter-spacing:0.04em; position:absolute; top:0; left:0; color:#1a0d00; }
+.temp-real {
+  font-family:'DSEG7','Courier New',monospace; font-size:7vw;
+  letter-spacing:0.04em; position:relative;
+  color:#ffb300; text-shadow:0 0 10px rgba(255,179,0,0.4);
+}
+.temp-real sup { font-size:2vw; vertical-align:super; font-family:'Share Tech Mono','Courier New',monospace; opacity:0.7; }
+.w-line { font-size:1.6vw; letter-spacing:0.08em; color:#3a2200; margin-top:0.3vh; line-height:1.8; }
+.w-line b { color:#c87f00; }
+.w-line.bright b { color:#ffb300; }
+
+/* WIDGET RADIO */
+#w-radio { -webkit-flex:1.3; flex:1.3; }
 .radio-btn {
-  background:transparent; border:1px solid #2a1400; color:#5a3800;
+  background:transparent;
+  border:1px solid #2a1400;
+  color:#5a3800;
   font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:1.5vw; letter-spacing:0.1em;
-  padding:0.8vh 1.5vw; cursor:pointer; text-align:left; border-radius:2px; -webkit-appearance:none;
+  font-size:1.8vw; letter-spacing:0.12em;
+  padding:1vh 1.5vw;
+  cursor:pointer; text-align:left;
+  border-radius:2px; -webkit-appearance:none;
+  margin-bottom:1vh;
+  width:100%;
+  display:block;
 }
-.radio-btn.playing { border-color:#c87f00; color:#ffb300; background:rgba(255,179,0,0.05); }
+.radio-btn:last-child { margin-bottom:0; }
+.radio-btn.playing {
+  border-color:#c87f00; color:#ffb300;
+  background:rgba(255,179,0,0.05);
+}
 
-/* ALARMA */
-.alarm-row { display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; gap:1.5vw; margin-bottom:1vh; }
-.alarm-btn {
-  background:transparent; border:1px solid #2a1400; color:#5a3800;
+/* WIDGET ALARMA */
+#w-alarm { -webkit-flex:0.9; flex:0.9; }
+.alarm-time-big {
+  font-family:'DSEG7','Courier New',monospace;
+  font-size:5vw; color:#5a3800;
+  letter-spacing:0.08em; margin-bottom:0.8vh;
+  text-align:center;
+}
+.alarm-time-big.set { color:#ffb300; text-shadow:0 0 10px rgba(255,179,0,0.3); }
+.alarm-action-btns {
+  display:-webkit-flex; display:flex;
+  gap:1.5vw;
+}
+.alarm-action-btn {
+  -webkit-flex:1; flex:1;
+  background:transparent; border:1px solid #2a1400; color:#3a2200;
   font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:1.4vw; letter-spacing:0.1em;
-  padding:0.6vh 1.5vw; cursor:pointer; border-radius:2px; -webkit-appearance:none; white-space:nowrap;
+  font-size:1.6vw; letter-spacing:0.1em;
+  padding:0.8vh 0; cursor:pointer;
+  border-radius:2px; -webkit-appearance:none; text-align:center;
 }
-.alarm-btn.set { border-color:#c87f00; color:#ffb300; }
-.alarm-set-time { font-size:1.5vw; color:#c87f00; letter-spacing:0.1em; }
-.alarm-dismiss {
-  background:transparent; border:1px solid #1e1000; color:#2a1400;
-  font-family:'Share Tech Mono','Courier New',monospace; font-size:1.3vw;
-  padding:0.3vh 0.8vw; cursor:pointer; border-radius:2px; -webkit-appearance:none; display:none;
+.alarm-action-btn.active { border-color:#c87f00; color:#c87f00; }
+
+/* WIDGET NOTICIAS */
+#w-news { -webkit-flex:1.8; flex:1.8; }
+#news-source { font-size:1.5vw; letter-spacing:0.3em; color:#2a1400; text-transform:uppercase; margin-bottom:0.4vh; }
+#news-headline {
+  font-size:1.8vw; color:#5a3800; letter-spacing:0.04em;
+  line-height:1.6;
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  transition:opacity 0.3s ease;
 }
 
-/* NOTICIAS */
-.news-divider { border:none; border-top:1px solid #1e1000; margin:0.6vh 0; }
-.news-source { font-size:1.3vw; letter-spacing:0.28em; color:#2a1400; text-transform:uppercase; margin-bottom:0.4vh; }
-.news-headline { font-size:1.5vw; color:#5a3800; letter-spacing:0.04em; line-height:1.6; }
+/* ═══════════════════════════════
+   MODO NOCHE
+═══════════════════════════════ */
+.night #widgets { display:none; }
+.night #divider { display:none; }
+.night #clock-block { -webkit-flex:1; flex:1; }
+.night .lcd-real { font-size:34vw; }
+.night .lcd-ghost { font-size:34vw; }
+.night .date-chip { font-size:3.5vw; }
+.night #night-bar { display:-webkit-flex !important; display:flex !important; }
 
-/* MODAL ALARMA */
-.modal-overlay {
-  display:none; position:absolute; top:0; left:0; right:0; bottom:0;
-  background:rgba(8,5,0,0.94); z-index:100;
+#night-bar {
+  display:none;
+  -webkit-flex-direction:row; flex-direction:row;
+  -webkit-justify-content:center; justify-content:center;
+  -webkit-align-items:center; align-items:center;
+  gap:3vw;
+  padding:2vh 0 1vh 0;
+}
+.night-btn {
+  background:transparent; border:1px solid #2a1400; color:#3a2200;
+  font-family:'Share Tech Mono','Courier New',monospace;
+  font-size:2vw; letter-spacing:0.15em;
+  padding:1vh 3vw; cursor:pointer;
+  border-radius:2px; -webkit-appearance:none;
+}
+.night-btn.playing { border-color:#c87f00; color:#ffb300; }
+.night-btn.set { border-color:#c87f00; color:#ffb300; }
+
+/* ═══════════════════════════════
+   MODAL ALARMA
+═══════════════════════════════ */
+#alarm-modal {
+  display:none; position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background:rgba(6,4,0,0.95); z-index:100;
   -webkit-flex-direction:column; flex-direction:column;
   -webkit-align-items:center; align-items:center;
-  -webkit-justify-content:center; justify-content:center; gap:3vh;
+  -webkit-justify-content:center; justify-content:center;
+  gap:3vh;
 }
-.modal-overlay.open { display:-webkit-flex; display:flex; }
-.modal-title { font-size:1.8vw; letter-spacing:0.3em; color:#7a4e00; text-transform:uppercase; }
-.modal-input {
-  font-family:'DSEG7','Courier New',monospace; font-size:10vw;
-  background:transparent; border:none; border-bottom:1px solid #ffb300;
-  color:#ffb300; text-align:center; width:50vw; outline:none; -webkit-appearance:none;
+#alarm-modal.open { display:-webkit-flex; display:flex; }
+.modal-title { font-size:2vw; letter-spacing:0.3em; color:#7a4e00; text-transform:uppercase; }
+#alarm-input {
+  font-family:'DSEG7','Courier New',monospace; font-size:14vw;
+  background:transparent; border:none;
+  border-bottom:1px solid #ffb300;
+  color:#ffb300; text-align:center;
+  width:60vw; outline:none; -webkit-appearance:none;
 }
-.modal-btns { display:-webkit-flex; display:flex; gap:3vw; }
+.modal-btns { display:-webkit-flex; display:flex; gap:4vw; }
 .modal-btn {
   background:transparent; border:1px solid #2a1400; color:#5a3800;
   font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:1.6vw; letter-spacing:0.2em; padding:1vh 3vw; cursor:pointer; border-radius:2px; -webkit-appearance:none;
+  font-size:2vw; letter-spacing:0.2em;
+  padding:1.2vh 4vw; cursor:pointer;
+  border-radius:2px; -webkit-appearance:none;
 }
 .modal-btn.ok { border-color:#c87f00; color:#ffb300; }
 
-/* RINGING */
-.ringing-overlay {
-  display:none; position:absolute; top:0; left:0; right:0; bottom:0;
-  background:rgba(8,5,0,0.96); z-index:200;
+/* ═══════════════════════════════
+   RINGING
+═══════════════════════════════ */
+#ringing {
+  display:none; position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background:rgba(6,4,0,0.97); z-index:200;
   -webkit-flex-direction:column; flex-direction:column;
   -webkit-align-items:center; align-items:center;
-  -webkit-justify-content:center; justify-content:center; gap:3vh;
+  -webkit-justify-content:center; justify-content:center;
+  gap:3vh;
 }
-.ringing-overlay.open { display:-webkit-flex; display:flex; }
-.ring-time {
-  font-family:'DSEG7','Courier New',monospace; font-size:22vw; color:#ffb300;
-  text-shadow:0 0 24px rgba(255,179,0,0.6);
-  -webkit-animation:pulse 0.8s infinite alternate; animation:pulse 0.8s infinite alternate;
+#ringing.open { display:-webkit-flex; display:flex; }
+#ring-clock {
+  font-family:'DSEG7','Courier New',monospace;
+  font-size:26vw; color:#ffb300;
+  text-shadow:0 0 30px rgba(255,179,0,0.7);
+  -webkit-animation:pulse 0.8s infinite alternate;
+  animation:pulse 0.8s infinite alternate;
 }
-@-webkit-keyframes pulse { from{opacity:0.5} to{opacity:1} }
-@keyframes pulse { from{opacity:0.5} to{opacity:1} }
-.ring-label { font-size:2vw; letter-spacing:0.35em; color:#c87f00; text-transform:uppercase; }
-.ring-stop {
+@-webkit-keyframes pulse { from{opacity:0.4} to{opacity:1} }
+@keyframes pulse { from{opacity:0.4} to{opacity:1} }
+#ring-label { font-size:2.5vw; letter-spacing:0.4em; color:#c87f00; text-transform:uppercase; }
+#ring-stop {
   background:transparent; border:1px solid #ffb300; color:#ffb300;
   font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:1.8vw; letter-spacing:0.2em; padding:1.2vh 4vw; cursor:pointer; border-radius:2px; -webkit-appearance:none;
+  font-size:2vw; letter-spacing:0.2em;
+  padding:1.5vh 6vw; cursor:pointer;
+  border-radius:2px; -webkit-appearance:none;
 }
-
-/* MODO NOCHE */
-.night-mode .col-left { display:none; }
-.night-mode .col-right { display:none; }
-.night-mode .col-center { width:100%; }
-.night-mode .lcd-real { font-size:26vw; }
-.night-mode .lcd-ghost { font-size:26vw; }
-.night-mode .date-chip { font-size:3vw; }
-.night-mode .night-controls { display:-webkit-flex !important; display:flex !important; }
-
-.night-controls {
-  display:none;
-  -webkit-flex-direction:row; flex-direction:row;
-  -webkit-align-items:center; align-items:center;
-  -webkit-justify-content:center; justify-content:center;
-  gap:4vw; padding:1.5vh 2vw;
-  border-top:1px solid #1e1000;
-  position:relative; z-index:2;
-}
-.night-radio-btn {
-  background:transparent; border:1px solid #2a1400; color:#5a3800;
-  font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:1.8vw; letter-spacing:0.15em; padding:0.8vh 3vw; cursor:pointer; border-radius:2px; -webkit-appearance:none;
-}
-.night-radio-btn.playing { border-color:#c87f00; color:#ffb300; }
-.night-alarm-btn {
-  background:transparent; border:1px solid #2a1400; color:#5a3800;
-  font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:1.8vw; letter-spacing:0.15em; padding:0.8vh 3vw; cursor:pointer; border-radius:2px; -webkit-appearance:none;
-}
-.night-alarm-btn.set { border-color:#c87f00; color:#ffb300; }
 </style>
 </head>
 <body>
-<div class="watch" id="watch">
-  <div class="watch-inner"></div>
+<div id="app">
 
-  <!-- HEADER -->
-  <div class="header">
-    <span class="h-label">&#9679; CASIO &#183; BUE</span>
-    <span class="h-seconds" id="seconds">00</span>
-    <span class="h-label" id="alarm-ind"></span>
+  <!-- RELOJ -->
+  <div id="clock-block">
+    <div id="top-bar">
+      <span class="top-label">&#9679; CASIO &#183; BUE</span>
+      <span id="alarm-ind"></span>
+    </div>
+    <div class="lcd-wrap">
+      <div class="lcd-ghost" id="clock-ghost">88<span>:</span>88</div>
+      <div class="lcd-real" id="clock-real">--<span class="sep-blink">:</span>--</div>
+    </div>
+    <div id="date-sec-row">
+      <span class="date-chip dim" id="date-day">DOM</span>
+      <span class="date-chip" id="date-full">-- --- ----</span>
+      <span id="seconds-display">00</span>
+    </div>
   </div>
 
-  <!-- MAIN 3 COLUMNAS -->
-  <div class="main">
+  <hr id="divider">
 
-    <!-- IZQUIERDA: CLIMA -->
-    <div class="col-left">
-      <div class="panel-label">&#9650; CLIMA</div>
-      <div id="weather-section"><div class="w-desc">CARGANDO...</div></div>
+  <!-- WIDGETS -->
+  <div id="widgets">
+
+    <!-- CLIMA -->
+    <div class="widget" id="w-clima">
+      <div class="widget-label">&#9650; CLIMA</div>
+      <div id="weather-content"><div class="w-line">CARGANDO...</div></div>
     </div>
 
-    <!-- CENTRO: RELOJ -->
-    <div class="col-center">
-      <div class="lcd-wrap">
-        <div class="lcd-ghost" id="clock-ghost">88<span>:</span>88</div>
-        <div class="lcd-real" id="clock-real">00<span class="sep-blink">:</span>00</div>
-      </div>
-      <div class="date-row">
-        <div class="date-chip" id="date-day">DOM</div>
-        <div class="date-chip bright" id="date-full">-- --- ----</div>
+    <!-- RADIO -->
+    <div class="widget" id="w-radio">
+      <div class="widget-label">&#9654; RADIO</div>
+      <button class="radio-btn" id="btn-lared" onclick="toggleRadio('lared')">&#9654; LA RED AM 910</button>
+      <button class="radio-btn" id="btn-aspen" onclick="toggleRadio('aspen')">&#9654; ASPEN FM 102.3</button>
+    </div>
+
+    <!-- ALARMA -->
+    <div class="widget" id="w-alarm">
+      <div class="widget-label">&#9675; ALARMA</div>
+      <div class="alarm-time-big" id="alarm-display">--:--</div>
+      <div class="alarm-action-btns">
+        <button class="alarm-action-btn" onclick="openAlarmModal()">FIJAR</button>
+        <button class="alarm-action-btn" id="alarm-clear-btn" onclick="clearAlarm()" style="display:none">BORRAR</button>
       </div>
     </div>
 
-    <!-- DERECHA: RADIO + ALARMA + NOTICIAS -->
-    <div class="col-right">
-      <div class="panel-label">&#9632; RADIO</div>
-      <div class="radio-btns">
-        <button class="radio-btn" id="btn-lared" onclick="toggleRadio('lared')">&#9654; LA RED AM 910</button>
-        <button class="radio-btn" id="btn-aspen" onclick="toggleRadio('aspen')">&#9654; ASPEN FM 102.3</button>
-      </div>
-      <div class="panel-label">&#9675; ALARMA</div>
-      <div class="alarm-row">
-        <button class="alarm-btn" id="alarm-btn" onclick="openAlarmModal()">FIJAR</button>
-        <span class="alarm-set-time" id="alarm-set-time"></span>
-        <button class="alarm-dismiss" id="alarm-dismiss" onclick="clearAlarm()">X</button>
-      </div>
-      <hr class="news-divider">
-      <div id="news-wrap">
-        <div class="news-source" id="news-source">NOTICIAS</div>
-        <div class="news-headline" id="news-headline">CARGANDO...</div>
-      </div>
+    <!-- NOTICIAS -->
+    <div class="widget" id="w-news">
+      <div class="widget-label">&#9632; NOTICIAS</div>
+      <div id="news-source">--</div>
+      <div id="news-headline">CARGANDO...</div>
     </div>
 
   </div>
 
-  <!-- NOCHE: barra inferior con radio y alarma -->
-  <div class="night-controls" id="night-controls">
-    <button class="night-radio-btn" id="night-btn-lared" onclick="toggleRadio('lared')">&#9654; LA RED 910</button>
-    <button class="night-radio-btn" id="night-btn-aspen" onclick="toggleRadio('aspen')">&#9654; ASPEN 102.3</button>
-    <button class="night-alarm-btn" id="night-alarm-btn" onclick="openAlarmModal()">&#9675; ALARMA</button>
+  <!-- BARRA NOCHE -->
+  <div id="night-bar">
+    <button class="night-btn" id="night-lared" onclick="toggleRadio('lared')">&#9654; LA RED 910</button>
+    <button class="night-btn" id="night-aspen" onclick="toggleRadio('aspen')">&#9654; ASPEN 102.3</button>
+    <button class="night-btn" id="night-alarm-btn" onclick="openAlarmModal()">&#9675; ALARMA</button>
   </div>
 
 </div>
 
 <!-- MODAL ALARMA -->
-<div class="modal-overlay" id="alarm-modal">
+<div id="alarm-modal">
   <div class="modal-title">FIJAR ALARMA</div>
-  <input type="time" class="modal-input" id="alarm-input">
+  <input type="time" id="alarm-input">
   <div class="modal-btns">
-    <button class="modal-btn" onclick="closeAlarmModal()">CANCELAR</button>
+    <button class="modal-btn" onclick="closeModal()">CANCELAR</button>
     <button class="modal-btn ok" onclick="saveAlarm()">CONFIRMAR</button>
   </div>
 </div>
 
 <!-- RINGING -->
-<div class="ringing-overlay" id="ringing-overlay">
-  <div class="ring-label">&#9679;&#9679;&#9679; ALARMA &#9679;&#9679;&#9679;</div>
-  <div class="ring-time" id="ring-time">00:00</div>
-  <button class="ring-stop" onclick="stopAlarm()">DETENER</button>
+<div id="ringing">
+  <div id="ring-label">&#9679;&#9679;&#9679; ALARMA &#9679;&#9679;&#9679;</div>
+  <div id="ring-clock">--:--</div>
+  <button id="ring-stop" onclick="stopAlarm()">DETENER</button>
 </div>
 
 <audio id="radio-audio" preload="none"></audio>
 
 <script>
-var LAT=-34.5920,LON=-58.4229;
+var LAT=-34.5920, LON=-58.4229;
 var DIAS=['DOM','LUN','MAR','MIE','JUE','VIE','SAB'];
 var MESES=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
 var WMO={0:'DESPEJADO',1:'CASI DESP.',2:'PARC.NUBLADO',3:'NUBLADO',45:'NIEBLA',48:'NIEBLA',51:'LLOVIZNA',53:'LLOVIZNA',55:'LLOVIZNA',61:'LLUVIA',63:'LLUVIA',65:'LLUVIA FUERTE',71:'NIEVE',73:'NIEVE',75:'NIEVE',80:'CHUBASCOS',81:'CHUBASCOS',82:'CHUBASCOS',95:'TORMENTA',96:'TORMENTA',99:'TORMENTA'};
 var STREAMS={lared:'https://playerservices.streamtheworld.com/api/livestream-redirect/LA_REDAAC.aac',aspen:'https://playerservices.streamtheworld.com/api/livestream-redirect/ASPENAAC.aac'};
 var STREAMS_ALT={lared:'https://20283.live.streamtheworld.com/LA_REDAAC.aac',aspen:'https://20283.live.streamtheworld.com/ASPENAAC.aac'};
-var RSS_FEEDS=[{name:'INFOBAE',url:'https://www.infobae.com/feeds/rss/'},{name:'BBC MUNDO',url:'https://feeds.bbci.co.uk/mundo/rss.xml'}];
+var RSS=[{name:'INFOBAE',url:'https://www.infobae.com/feeds/rss/'},{name:'BBC MUNDO',url:'https://feeds.bbci.co.uk/mundo/rss.xml'}];
 var CORS='https://api.allorigins.win/raw?url=';
-var alarmTime=null,alarmFired=false,currentRadio=null,newsItems=[],newsIdx=0,newsTimer=null,alarmInterval=null;
+var alarmTime=null,alarmFired=false,currentRadio=null,newsItems=[],newsIdx=0,newsTimer=null,alarmInt=null;
+
 function pad(n){return n<10?'0'+n:''+n;}
-function isNight(){var h=new Date().getHours(),m=new Date().getMinutes(),t=h*60+m;return t>=23*60+30||t<7*60;}
+function isNight(){var t=new Date().getHours()*60+new Date().getMinutes();return t>=23*60+30||t<7*60;}
+
 function updateClock(){
   var now=new Date();
-  document.getElementById('clock-real').innerHTML=pad(now.getHours())+'<span class="sep-blink">:</span>'+pad(now.getMinutes());
-  document.getElementById('seconds').textContent=pad(now.getSeconds());
+  var h=pad(now.getHours()),m=pad(now.getMinutes()),s=pad(now.getSeconds());
+  document.getElementById('clock-real').innerHTML=h+'<span class="sep-blink">:</span>'+m;
+  document.getElementById('seconds-display').textContent=s;
   document.getElementById('date-day').textContent=DIAS[now.getDay()];
   document.getElementById('date-full').textContent=pad(now.getDate())+' '+MESES[now.getMonth()]+' '+now.getFullYear();
-  var w=document.getElementById('watch');
-  if(isNight()){w.classList.add('night-mode');}else{w.classList.remove('night-mode');}
-  checkAlarm(pad(now.getHours())+':'+pad(now.getMinutes()));
+  document.getElementById('app').className=isNight()?'night':'';
+  checkAlarm(h+':'+m);
 }
-function checkAlarm(cur){if(!alarmTime)return;if(cur===alarmTime&&!alarmFired){alarmFired=true;ringAlarm();}if(cur!==alarmTime)alarmFired=false;}
+
+function checkAlarm(cur){
+  if(!alarmTime)return;
+  if(cur===alarmTime&&!alarmFired){alarmFired=true;ringAlarm();}
+  if(cur!==alarmTime)alarmFired=false;
+}
+
 function ringAlarm(){
-  document.getElementById('ringing-overlay').classList.add('open');
-  document.getElementById('ring-time').textContent=alarmTime;
+  document.getElementById('ring-clock').textContent=alarmTime;
+  document.getElementById('ringing').classList.add('open');
   try{
     var ctx=new(window.AudioContext||window.webkitAudioContext)();
     function beep(){var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.setValueAtTime(0.4,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.25);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.25);}
-    beep();alarmInterval=setInterval(function(){beep();setTimeout(beep,300);},900);
+    beep();alarmInt=setInterval(function(){beep();setTimeout(beep,280);},900);
   }catch(e){}
 }
-function stopAlarm(){document.getElementById('ringing-overlay').classList.remove('open');if(alarmInterval){clearInterval(alarmInterval);alarmInterval=null;}}
-function openAlarmModal(){document.getElementById('alarm-modal').classList.add('open');if(alarmTime)document.getElementById('alarm-input').value=alarmTime;}
-function closeAlarmModal(){document.getElementById('alarm-modal').classList.remove('open');}
+
+function stopAlarm(){
+  document.getElementById('ringing').classList.remove('open');
+  if(alarmInt){clearInterval(alarmInt);alarmInt=null;}
+}
+
+function openAlarmModal(){
+  document.getElementById('alarm-modal').classList.add('open');
+  if(alarmTime)document.getElementById('alarm-input').value=alarmTime;
+}
+function closeModal(){document.getElementById('alarm-modal').classList.remove('open');}
+
 function saveAlarm(){
   var val=document.getElementById('alarm-input').value;
-  if(!val){closeAlarmModal();return;}
-  alarmTime=val;alarmFired=false;
-  document.getElementById('alarm-btn').className='alarm-btn set';
-  document.getElementById('alarm-btn').textContent='ALM '+val;
-  document.getElementById('alarm-set-time').textContent='';
-  document.getElementById('alarm-dismiss').style.display='inline-block';
+  if(!val){closeModal();return;}
+  alarmTime=val; alarmFired=false;
+  document.getElementById('alarm-display').textContent=val;
+  document.getElementById('alarm-display').className='alarm-time-big set';
+  document.getElementById('alarm-clear-btn').style.display='block';
   document.getElementById('alarm-ind').textContent='ALM '+val;
-  document.getElementById('night-alarm-btn').className='night-alarm-btn set';
   document.getElementById('night-alarm-btn').textContent='ALM '+val;
-  closeAlarmModal();
+  document.getElementById('night-alarm-btn').className='night-btn set';
+  closeModal();
 }
+
 function clearAlarm(){
-  alarmTime=null;alarmFired=false;
-  document.getElementById('alarm-btn').className='alarm-btn';
-  document.getElementById('alarm-btn').textContent='FIJAR';
-  document.getElementById('alarm-set-time').textContent='';
-  document.getElementById('alarm-dismiss').style.display='none';
+  alarmTime=null; alarmFired=false;
+  document.getElementById('alarm-display').textContent='--:--';
+  document.getElementById('alarm-display').className='alarm-time-big';
+  document.getElementById('alarm-clear-btn').style.display='none';
   document.getElementById('alarm-ind').textContent='';
-  document.getElementById('night-alarm-btn').className='night-alarm-btn';
   document.getElementById('night-alarm-btn').textContent='\u25cb ALARMA';
+  document.getElementById('night-alarm-btn').className='night-btn';
 }
+
 function toggleRadio(s){
   var audio=document.getElementById('radio-audio');
-  if(currentRadio===s){audio.pause();audio.src='';currentRadio=null;updateBtns(null);return;}
-  audio.pause();audio.src='';currentRadio=s;
+  if(currentRadio===s){audio.pause();audio.src='';currentRadio=null;updateRadioBtns(null);return;}
+  audio.pause();audio.src='';
+  currentRadio=s;
   audio.src=STREAMS[s];audio.load();
   audio.play().catch(function(){audio.src=STREAMS_ALT[s];audio.load();audio.play().catch(function(){});});
-  updateBtns(s);
+  updateRadioBtns(s);
 }
-function updateBtns(active){
+
+function updateRadioBtns(active){
   var ss=['lared','aspen'];
+  var labels={lared:'LA RED AM 910',aspen:'ASPEN FM 102.3'};
+  var nlabels={lared:'LA RED 910',aspen:'ASPEN 102.3'};
   for(var i=0;i<ss.length;i++){
-    var s=ss[i],playing=s===active;
-    var lbl=s==='lared'?'LA RED AM 910':'ASPEN FM 102.3';
-    var nlbl=s==='lared'?'LA RED 910':'ASPEN 102.3';
-    var pre=playing?'\u25a0 ':'\u25b6 ';
+    var s=ss[i],on=s===active,pre=on?'\u25a0 ':'\u25b6 ';
     var b=document.getElementById('btn-'+s);
-    var nb=document.getElementById('night-btn-'+s);
-    if(b){b.textContent=pre+lbl;b.className='radio-btn'+(playing?' playing':'');}
-    if(nb){nb.textContent=pre+nlbl;nb.className='night-radio-btn'+(playing?' playing':'');}
+    var nb=document.getElementById('night-'+s);
+    if(b){b.textContent=pre+labels[s];b.className='radio-btn'+(on?' playing':'');}
+    if(nb){nb.textContent=pre+nlabels[s];nb.className='night-btn'+(on?' playing':'');}
   }
 }
+
 function fetchWeather(){
   var url='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current_weather=true&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,weathercode&hourly=apparent_temperature,relativehumidity_2m&timezone=America%2FArgentina%2FBuenos_Aires&forecast_days=1';
   var xhr=new XMLHttpRequest();xhr.open('GET',url,true);
   xhr.onreadystatechange=function(){
     if(xhr.readyState!==4)return;
-    var el=document.getElementById('weather-section');
+    var el=document.getElementById('weather-content');
     if(xhr.status===200){
       try{
         var d=JSON.parse(xhr.responseText),cw=d.current_weather;
         var temp=Math.round(cw.temperature),max=Math.round(d.daily.temperature_2m_max[0]),min=Math.round(d.daily.temperature_2m_min[0]);
-        var h=new Date().getHours();
-        var sens=Math.round(d.hourly.apparent_temperature[h]!==undefined?d.hourly.apparent_temperature[h]:temp);
-        var hum=d.hourly.relativehumidity_2m[h]!==undefined?d.hourly.relativehumidity_2m[h]:'--';
+        var hh=new Date().getHours();
+        var sens=Math.round(d.hourly.apparent_temperature[hh]!==undefined?d.hourly.apparent_temperature[hh]:temp);
+        var hum=d.hourly.relativehumidity_2m[hh]!==undefined?d.hourly.relativehumidity_2m[hh]:'--';
         var wind=Math.round(cw.windspeed),desc=WMO[cw.weathercode]||'VARIABLE';
-        var sunrise=d.daily.sunrise[0].split('T')[1].substring(0,5);
-        var sunset=d.daily.sunset[0].split('T')[1].substring(0,5);
-        el.innerHTML='<div class="temp-wrap"><div class="temp-ghost">88!</div><div class="temp-real">'+temp+'<sup>&#176;C</sup></div></div><div class="w-desc">'+desc+'</div><div class="w-meta">MIN <b>'+min+'&#176;</b> MAX <b>'+max+'&#176;</b><br>SENS <b>'+sens+'&#176;</b> HUM <b>'+hum+'%</b><br>VIENTO <b>'+wind+'KM/H</b></div><div class="w-sun">&#9728; <b>'+sunrise+'</b> &nbsp; &#9790; <b>'+sunset+'</b></div>';
-      }catch(e){el.innerHTML='<div class="w-desc">SIN DATOS</div>';}
-    }else{el.innerHTML='<div class="w-desc">SIN DATOS</div>';}
+        var sr=d.daily.sunrise[0].split('T')[1].substring(0,5);
+        var ss2=d.daily.sunset[0].split('T')[1].substring(0,5);
+        el.innerHTML=
+          '<div class="temp-wrap">'+
+            '<div class="temp-ghost">88!</div>'+
+            '<div class="temp-real">'+temp+'<sup>&#176;</sup></div>'+
+          '</div>'+
+          '<div class="w-line">'+desc+'</div>'+
+          '<div class="w-line">MIN <b>'+min+'&#176;</b> MAX <b>'+max+'&#176;</b></div>'+
+          '<div class="w-line">SENS <b>'+sens+'&#176;</b> HUM <b>'+hum+'%</b></div>'+
+          '<div class="w-line">&#9728; <b>'+sr+'</b> &nbsp; &#9790; <b>'+ss2+'</b></div>';
+      }catch(e){el.innerHTML='<div class="w-line">SIN DATOS</div>';}
+    }else{el.innerHTML='<div class="w-line">SIN DATOS</div>';}
   };xhr.send();
 }
+
 function parseRSS(xml){
   var items=[];
-  try{var p=new DOMParser(),doc=p.parseFromString(xml,'text/xml'),entries=doc.querySelectorAll('item');
-    for(var i=0;i<Math.min(entries.length,6);i++){var t=entries[i].querySelector('title');if(t){var txt=t.textContent.replace(/<!\[CDATA\[|\]\]>/g,'').trim();if(txt)items.push(txt);}}
-  }catch(e){}return items;
+  try{
+    var doc=new DOMParser().parseFromString(xml,'text/xml');
+    var entries=doc.querySelectorAll('item');
+    for(var i=0;i<Math.min(entries.length,6);i++){
+      var t=entries[i].querySelector('title');
+      if(t){var txt=t.textContent.replace(/<!\[CDATA\[|\]\]>/g,'').trim();if(txt)items.push(txt);}
+    }
+  }catch(e){}
+  return items;
 }
+
 function fetchNews(){
   if(isNight())return;
   newsItems=[];var loaded=0;
-  for(var i=0;i<RSS_FEEDS.length;i++){
+  for(var i=0;i<RSS.length;i++){
     (function(feed){
-      var xhr=new XMLHttpRequest();xhr.open('GET',CORS+encodeURIComponent(feed.url),true);
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET',CORS+encodeURIComponent(feed.url),true);
       xhr.onreadystatechange=function(){
         if(xhr.readyState!==4)return;
-        if(xhr.status===200){var items=parseRSS(xhr.responseText);for(var j=0;j<items.length;j++)newsItems.push({source:feed.name,title:items[j]});}
-        loaded++;if(loaded===RSS_FEEDS.length)startNews();
+        if(xhr.status===200){
+          var items=parseRSS(xhr.responseText);
+          for(var j=0;j<items.length;j++)newsItems.push({source:feed.name,title:items[j]});
+        }
+        if(++loaded===RSS.length)startNews();
       };xhr.send();
-    })(RSS_FEEDS[i]);
+    })(RSS[i]);
   }
 }
+
 function startNews(){
   if(newsTimer)clearInterval(newsTimer);
   if(!newsItems.length){document.getElementById('news-source').textContent='--';document.getElementById('news-headline').textContent='SIN NOTICIAS';return;}
-  showNewsItem(0);
-  newsTimer=setInterval(function(){if(isNight())return;newsIdx=(newsIdx+1)%newsItems.length;var el=document.getElementById('news-headline');el.style.opacity='0';setTimeout(function(){showNewsItem(newsIdx);el.style.opacity='1';},300);},20000);
+  showNews(0);
+  newsTimer=setInterval(function(){
+    if(isNight())return;
+    newsIdx=(newsIdx+1)%newsItems.length;
+    var el=document.getElementById('news-headline');
+    el.style.opacity='0';
+    setTimeout(function(){showNews(newsIdx);el.style.opacity='1';},300);
+  },20000);
 }
-function showNewsItem(idx){if(!newsItems.length)return;var item=newsItems[idx];document.getElementById('news-source').textContent=item.source;document.getElementById('news-headline').textContent=item.title;}
-updateClock();setInterval(updateClock,1000);
-fetchWeather();setInterval(fetchWeather,30*60*1000);
-fetchNews();setInterval(fetchNews,30*60*1000);
+
+function showNews(i){
+  document.getElementById('news-source').textContent=newsItems[i].source;
+  document.getElementById('news-headline').textContent=newsItems[i].title;
+}
+
+updateClock();
+setInterval(updateClock,1000);
+fetchWeather();
+setInterval(fetchWeather,30*60*1000);
+fetchNews();
+setInterval(fetchNews,30*60*1000);
 document.addEventListener('touchstart',function(){},false);
 </script>
 </body>
