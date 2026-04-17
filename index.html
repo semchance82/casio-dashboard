@@ -20,12 +20,10 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 
 #app { width:100%; height:100%; display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; padding:2vw 3vw; }
 
-/* TOP BAR */
 #top-bar { display:-webkit-flex; display:flex; -webkit-justify-content:space-between; justify-content:space-between; -webkit-align-items:center; align-items:center; margin-bottom:1vh; }
 .top-label { font-size:1.8vw; letter-spacing:0.25em; color:#3a2200; text-transform:uppercase; }
 #alarm-ind { font-size:1.8vw; letter-spacing:0.2em; color:#c87f00; }
 
-/* RELOJ */
 #clock-block { -webkit-flex:1; flex:1; display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; -webkit-align-items:center; align-items:center; -webkit-justify-content:center; justify-content:center; }
 .lcd-wrap { position:relative; display:inline-block; line-height:1; }
 .lcd-ghost { font-family:'DSEG7','Courier New',monospace; font-size:28vw; letter-spacing:0.04em; position:absolute; top:0; left:0; color:#1a0d00; pointer-events:none; }
@@ -38,15 +36,12 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 .date-chip.dim { color:#7a4e00; }
 #sec-disp { font-family:'DSEG7','Courier New',monospace; font-size:3.5vw; color:#3a2200; }
 
-/* DIVISOR */
 #divider { border:none; border-top:1px solid #1a0d00; margin:1.5vh 0; }
 
-/* WIDGETS */
 #widgets { display:-webkit-flex; display:flex; -webkit-flex-direction:row; flex-direction:row; gap:2vw; height:30vh; }
 .widget { -webkit-flex:1; flex:1; border:1px solid #1a0d00; border-radius:3px; padding:1.5vh 2vw; display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; overflow:hidden; }
 .widget-label { font-size:1.5vw; letter-spacing:0.3em; color:#2a1400; text-transform:uppercase; border-bottom:1px solid #150b00; padding-bottom:0.5vh; margin-bottom:0.8vh; }
 
-/* CLIMA */
 #w-clima { -webkit-flex:1.1; flex:1.1; }
 .temp-wrap { position:relative; display:inline-block; line-height:1; }
 .temp-ghost { font-family:'DSEG7','Courier New',monospace; font-size:7vw; letter-spacing:0.04em; position:absolute; top:0; left:0; color:#1a0d00; }
@@ -55,7 +50,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 .w-line { font-size:1.5vw; letter-spacing:0.06em; color:#3a2200; margin-top:0.3vh; line-height:1.8; }
 .w-line b { color:#c87f00; }
 
-/* RADIO */
 #w-radio { -webkit-flex:1.2; flex:1.2; }
 .radio-btn {
   background:transparent; border:1px solid #2a1400; color:#5a3800;
@@ -68,7 +62,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 .radio-btn:last-child { margin-bottom:0; }
 .radio-btn.playing { border-color:#c87f00; color:#ffb300; background:rgba(255,179,0,0.05); }
 
-/* ALARMA */
 #w-alarm { -webkit-flex:1.3; flex:1.3; }
 .alarm-display {
   font-family:'DSEG7','Courier New',monospace;
@@ -88,12 +81,10 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 }
 .alarm-btn-sm.active { border-color:#c87f00; color:#c87f00; }
 
-/* NOTICIAS */
 #w-news { -webkit-flex:1.8; flex:1.8; }
 #news-source { font-size:1.4vw; letter-spacing:0.3em; color:#2a1400; text-transform:uppercase; margin-bottom:0.4vh; }
 #news-headline { font-size:1.7vw; color:#5a3800; letter-spacing:0.04em; line-height:1.6; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; transition:opacity 0.3s; }
 
-/* MODO NOCHE */
 .night #widgets { display:none; }
 .night #divider { display:none; }
 .night .lcd-real { font-size:34vw; }
@@ -117,7 +108,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 .night-btn.playing { border-color:#c87f00; color:#ffb300; }
 .night-btn.set { border-color:#c87f00; color:#ffb300; }
 
-/* MODAL ALARMA con flechas */
 #alarm-modal {
   display:none; position:fixed; top:0; left:0; right:0; bottom:0;
   background:rgba(6,4,0,0.96); z-index:100;
@@ -128,17 +118,8 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 #alarm-modal.open { display:-webkit-flex; display:flex; }
 .modal-title { font-size:2vw; letter-spacing:0.3em; color:#7a4e00; text-transform:uppercase; }
 
-.alarm-picker {
-  display:-webkit-flex; display:flex;
-  -webkit-align-items:center; align-items:center;
-  gap:3vw;
-}
-.picker-col {
-  display:-webkit-flex; display:flex;
-  -webkit-flex-direction:column; flex-direction:column;
-  -webkit-align-items:center; align-items:center;
-  gap:1.5vh;
-}
+.alarm-picker { display:-webkit-flex; display:flex; -webkit-align-items:center; align-items:center; gap:3vw; }
+.picker-col { display:-webkit-flex; display:flex; -webkit-flex-direction:column; flex-direction:column; -webkit-align-items:center; align-items:center; gap:1.5vh; }
 .picker-btn {
   background:transparent; border:1px solid #3a2200; color:#c87f00;
   font-family:'Share Tech Mono','Courier New',monospace;
@@ -156,11 +137,7 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
   letter-spacing:0.04em; line-height:1;
   min-width:16vw; text-align:center;
 }
-.picker-sep {
-  font-family:'DSEG7','Courier New',monospace;
-  font-size:12vw; color:#5a3800; line-height:1;
-  margin-top:-1vh;
-}
+.picker-sep { font-family:'DSEG7','Courier New',monospace; font-size:12vw; color:#5a3800; line-height:1; margin-top:-1vh; }
 
 .modal-btns { display:-webkit-flex; display:flex; gap:4vw; margin-top:1vh; }
 .modal-btn {
@@ -171,7 +148,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
 }
 .modal-btn.ok { border-color:#c87f00; color:#ffb300; }
 
-/* RINGING */
 #ringing {
   display:none; position:fixed; top:0; left:0; right:0; bottom:0;
   background:rgba(6,4,0,0.97); z-index:200;
@@ -180,20 +156,11 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
   -webkit-justify-content:center; justify-content:center; gap:3vh;
 }
 #ringing.open { display:-webkit-flex; display:flex; }
-#ring-clock {
-  font-family:'DSEG7','Courier New',monospace; font-size:26vw; color:#ffb300;
-  text-shadow:0 0 30px rgba(255,179,0,0.7);
-  -webkit-animation:pulse 0.8s infinite alternate; animation:pulse 0.8s infinite alternate;
-}
+#ring-clock { font-family:'DSEG7','Courier New',monospace; font-size:26vw; color:#ffb300; text-shadow:0 0 30px rgba(255,179,0,0.7); -webkit-animation:pulse 0.8s infinite alternate; animation:pulse 0.8s infinite alternate; }
 @-webkit-keyframes pulse { from{opacity:0.4} to{opacity:1} }
 @keyframes pulse { from{opacity:0.4} to{opacity:1} }
 #ring-label { font-size:2.5vw; letter-spacing:0.4em; color:#c87f00; text-transform:uppercase; }
-#ring-stop {
-  background:transparent; border:1px solid #ffb300; color:#ffb300;
-  font-family:'Share Tech Mono','Courier New',monospace;
-  font-size:2vw; letter-spacing:0.2em;
-  padding:1.5vh 6vw; cursor:pointer; border-radius:2px; -webkit-appearance:none;
-}
+#ring-stop { background:transparent; border:1px solid #ffb300; color:#ffb300; font-family:'Share Tech Mono','Courier New',monospace; font-size:2vw; letter-spacing:0.2em; padding:1.5vh 6vw; cursor:pointer; border-radius:2px; -webkit-appearance:none; }
 </style>
 </head>
 <body>
@@ -218,7 +185,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
   <hr id="divider">
 
   <div id="widgets">
-
     <div class="widget" id="w-clima">
       <div class="widget-label">CLIMA</div>
       <div id="weather-content"><div class="w-line">CARGANDO...</div></div>
@@ -244,7 +210,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
       <div id="news-source">--</div>
       <div id="news-headline">CARGANDO...</div>
     </div>
-
   </div>
 
   <div id="night-bar">
@@ -254,7 +219,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
   </div>
 </div>
 
-<!-- MODAL ALARMA -->
 <div id="alarm-modal">
   <div class="modal-title">FIJAR ALARMA</div>
   <div class="alarm-picker">
@@ -276,7 +240,6 @@ html, body { width:100%; height:100%; overflow:hidden; background:#060400; font-
   </div>
 </div>
 
-<!-- RINGING -->
 <div id="ringing">
   <div id="ring-label">ALARMA</div>
   <div id="ring-clock">--:--</div>
@@ -408,7 +371,7 @@ function fetchWeather(){
         var wind=Math.round(cw.windspeed),desc=WMO[cw.weathercode]||'VARIABLE';
         var sr=d.daily.sunrise[0].split('T')[1].substring(0,5);
         var ss2=d.daily.sunset[0].split('T')[1].substring(0,5);
-        el.innerHTML='<div class="temp-wrap"><div class="temp-ghost">88!</div><div class="temp-real">'+temp+'<sup>&#176;</sup></div></div><div class="w-line">'+desc+'</div><div class="w-line">MIN <b>'+min+'&#176;</b> MAX <b>'+max+'&#176;</b></div><div class="w-line">&#9728; <b>'+sr+'</b> &nbsp; &#9790; <b>'+ss2+'</b></div>';
+        el.innerHTML='<div class="temp-wrap"><div class="temp-ghost">88!</div><div class="temp-real">'+temp+'<sup>&#176;</sup></div></div><div class="w-line">'+desc+'</div><div class="w-line">MIN <b>'+min+'&#176;</b> MAX <b>'+max+'&#176;</b></div><div class="w-line">&#9728; <b>'+sr+'</b> &#9790; <b>'+ss2+'</b></div>';
       }catch(e){el.innerHTML='<div class="w-line">SIN DATOS</div>';}
     }else{el.innerHTML='<div class="w-line">SIN DATOS</div>';}
   };xhr.send();
